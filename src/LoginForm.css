@@ -1,0 +1,114 @@
+.login-section {
+    padding: 40px 32px;
+    min-height: 100svh;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-back {
+    margin-bottom: 24px;
+    padding: 8px 0;
+    border: none;
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .login-back:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  
+  .login-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--social-bg);
+    text-align: left;
+    box-sizing: border-box;
+  }
+  
+  .login-card h2 {
+    margin: 0 0 8px;
+  }
+  
+  .login-description {
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  
+  .form-group label {
+    color: var(--text-h);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--bg);
+    color: var(--text-h);
+    font-family: var(--sans);
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .form-group input:focus {
+    border-color: var(--accent);
+  }
+  
+  .form-group input::placeholder {
+    color: var(--text);
+  }
+  
+  .login-button {
+    width: 100%;
+    margin-top: 6px;
+    padding: 11px 16px;
+    border: 1px solid var(--accent-border);
+    border-radius: 7px;
+    background: var(--accent-bg);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 16px;
+    cursor: pointer;
+    transition:
+      background 0.3s,
+      border-color 0.3s;
+  }
+  
+  .login-button:hover {
+    background: rgba(192, 132, 252, 0.25);
+    border-color: var(--accent);
+  }
+  
+  .login-button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  
+  @media (max-width: 1024px) {
+    .login-section {
+      padding: 32px 20px;
+    }
+  
+    .login-card {
+      padding: 22px;
+    }
+  }
