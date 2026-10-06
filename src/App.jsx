@@ -32,6 +32,7 @@ const initialTasksByDay = Object.fromEntries(
 function App() {
   const [selectedDay, setSelectedDay] = useState('Pirmadienis')
   const [showLogin, setShowLogin] = useState(false)
+  const [showPlanner, setShowPlanner] = useState(false)
   const [tasksByDay, setTasksByDay] = useState(initialTasksByDay)
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [isAddingTask, setIsAddingTask] = useState(false)
@@ -78,6 +79,32 @@ function App() {
     return <LoginForm onBack={() => changeScreen(false)} />
   }
 
+  if (showPlanner) {
+    return (
+      <main className="planner-page">
+        <section className="planner-card" aria-labelledby="planner-title">
+          <p className="planner-eyebrow">Mano dienotvarkė</p>
+          <h1 id="planner-title">Išmanus dienos planuoklis</h1>
+          <p className="planner-description">
+            Suplanuok dieną pagal savo užduotis ir prioritetus
+          </p>
+          <div className="planner-placeholder" aria-label="Vieta būsimiems planuoklio elementams">
+            <span className="planner-placeholder-mark" aria-hidden="true">✦</span>
+            <h2>Planuoklio erdvė</h2>
+            <p>Čia atsiras tavo dienos planavimo elementai.</p>
+          </div>
+          <button
+            type="button"
+            className="planner-back-button"
+            onClick={() => setShowPlanner(false)}
+          >
+            Grįžti į dienotvarkę
+          </button>
+        </section>
+      </main>
+    )
+  }
+
   return (
     <>
       <header id="center">
@@ -120,6 +147,14 @@ function App() {
           </svg>
 
           <h2>Užduočių Sąrašas</h2>
+
+          <button
+            type="button"
+            className="day-button planner-open-button"
+            onClick={() => setShowPlanner(true)}
+          >
+            Išmanus planuoklis
+          </button>
 
           <button
             type="button"

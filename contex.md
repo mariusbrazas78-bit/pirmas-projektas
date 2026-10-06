@@ -348,6 +348,7 @@ Nauji komponentai taip pat turi būti pritaikyti mažesniems ekranams.
 - automatinis progreso skaičiavimas pagal pažymėtas pasirinktos dienos užduotis.
 - mažos statistikos kortelės virš progreso juostos: visų užduočių, atliktų ir likusių skaičiai.
 - vietoj kategorijų dešinėje rodomas „Mano diena“ skydelis: dienos tikslas, dienos progresas, artimiausia neatlikta veikla ir interaktyvus dienos užduočių sąrašas.
+- pagrindiniame puslapyje esantis „Išmanus planuoklis“ mygtukas atidaro atskirą „Išmanus dienos planuoklis“ vaizdą; grįžimo mygtukas grąžina į dienotvarkę.
 
 ---
 
@@ -551,6 +552,10 @@ Negalima pašalinti ankstesnio svarbaus projekto konteksto, jeigu jis vis dar ak
 Virš progreso juostos rodomos trys statistikos kortelės („Užduotys“, „Atliktos“, „Liko“). Jų skaičiai atnaujinami pagal pasirinktą savaitės dieną ir pažymėtas užduotis.
 
 Dešinysis skilties „Tikslai / Pasiekimai / Laisvalaikis“ blokas pakeistas į „Mano diena“. Jis rodo pasirinktos dienos tikslą (atlikti visas užduotis), progresą su procentine juosta, pirmą neatliktą užduotį kaip artimiausią veiklą ir sąrašą su veikiančiomis atlikimo varnelėmis. Informacija atsinaujina pasirinkus kitą savaitės dieną arba pakeitus užduoties būseną.
+
+`src/App.jsx` pridėtas atskiras planuoklio vaizdas be maršrutizavimo bibliotekos. Jį atidaro „Išmanus planuoklis“ mygtukas; jame rodomi pavadinimas „Išmanus dienos planuoklis“, aprašymas „Suplanuok dieną pagal savo užduotis ir prioritetus“, vieta būsimiems planuoklio elementams ir mygtukas „Grįžti į dienotvarkę“. Navigacija veikia į abi puses, o grįžtant pagrindinės dienotvarkės React būsena išlieka.
+
+`src/App.css` pridėti violetinį akcentą ir esamus spalvų kintamuosius naudojantys responsive planuoklio vaizdo stiliai.
 
 `src/App.css` pridėti formos, mygtuko ir užduočių sąrašo stiliai, naudojant esamus spalvų kintamuosius.
 

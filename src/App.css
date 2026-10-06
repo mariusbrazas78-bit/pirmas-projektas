@@ -228,6 +228,12 @@
 #docs {
   border-right: 1px solid var(--border);
 
+  .planner-open-button {
+    width: auto;
+    margin: 12px 8px 0 0;
+    text-align: center;
+  }
+
   .new-task-button {
     width: auto;
     margin-top: 16px;
@@ -303,6 +309,100 @@
   @media (max-width: 1024px) {
     border-right: none;
     border-bottom: 1px solid var(--border);
+  }
+}
+
+.planner-page {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  padding: 32px;
+}
+
+.planner-card {
+  width: min(100%, 720px);
+  padding: clamp(24px, 5vw, 48px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--social-bg);
+  box-shadow: var(--shadow);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.planner-eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.planner-card h1 {
+  margin: 0;
+  color: var(--text-h);
+}
+
+.planner-description {
+  margin: 12px 0 28px;
+  color: var(--text);
+}
+
+.planner-placeholder {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+  border: 1px dashed var(--accent-border);
+  border-radius: 14px;
+  background: var(--accent-bg);
+  box-sizing: border-box;
+}
+
+.planner-placeholder-mark {
+  color: var(--accent);
+  font-size: 32px;
+}
+
+.planner-placeholder h2,
+.planner-placeholder p {
+  margin: 0;
+}
+
+.planner-back-button {
+  min-height: 46px;
+  margin-top: 24px;
+  padding: 0 20px;
+  border: 1px solid var(--accent);
+  border-radius: 9px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.planner-back-button:hover {
+  filter: brightness(0.94);
+}
+
+.planner-back-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .planner-page {
+    padding: 16px;
+  }
+
+  .planner-placeholder {
+    min-height: 180px;
+    padding: 18px;
   }
 }
 
