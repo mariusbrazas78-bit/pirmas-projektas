@@ -22,6 +22,20 @@ function App() {
   const [selectedDay, setSelectedDay] = useState('Pirmadienis')
   const [selectedCategory, setSelectedCategory] = useState('Tikslai')
   const [showLogin, setShowLogin] = useState(false)
+  const [tasks, setTasks] = useState([])
+  const [newTaskTitle, setNewTaskTitle] = useState('')
+  const [isAddingTask, setIsAddingTask] = useState(false)
+
+  function addTask(event) {
+    event.preventDefault()
+
+    const title = newTaskTitle.trim()
+    if (!title) return
+
+    setTasks((currentTasks) => [...currentTasks, { id: Date.now(), title }])
+    setNewTaskTitle('')
+    setIsAddingTask(false)
+  }
 
   function changeScreen(loginIsVisible) {
     setShowLogin(loginIsVisible)
@@ -74,6 +88,34 @@ function App() {
           </svg>
 
           <h2>Užduočių Sąrašas</h2>
+
+          <button
+            type="button"
+            className="day-button new-task-button"
+            onClick={() => setIsAddingTask((isOpen) => !isOpen)}
+          >
+            Nauja užduotis
+          </button>
+
+          {isAddingTask && (
+            <form className="new-task-form" onSubmit={addTask}>
+              <label htmlFor="new-task-title">Užduoties pavadinimas</label>
+              <input
+                id="new-task-title"
+                type="text"
+                value={newTaskTitle}
+                onChange={(event) => setNewTaskTitle(event.target.value)}
+                autoFocus
+              />
+              <button type="submit" className="day-button">Pridėti</button>
+            </form>
+          )}
+
+          {tasks.length > 0 && (
+            <ul className="task-list">
+              {tasks.map((task) => <li key={task.id}>{task.title}</li>)}
+            </ul>
+          )}
 
           <div className="week-days week-picker" role="group" aria-label="Pasirinkite savaitės dieną">
             {weekDays.map((day, index) => (

@@ -189,6 +189,40 @@
 #docs {
   border-right: 1px solid var(--border);
 
+  .new-task-button {
+    width: auto;
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  .new-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 360px;
+    margin-top: 12px;
+
+    input {
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--social-bg);
+      color: var(--text-h);
+      font: inherit;
+    }
+
+    button {
+      width: auto;
+      align-self: flex-start;
+    }
+  }
+
+  .task-list {
+    padding-left: 20px;
+    color: var(--text-h);
+  }
+
   @media (max-width: 1024px) {
     border-right: none;
     border-bottom: 1px solid var(--border);
