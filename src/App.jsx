@@ -17,6 +17,7 @@ const weekDays = [
 const shortWeekDays = ['Pr', 'An', 'Tr', 'Kt', 'Pn', 'Št', 'Sk']
 const plannerCategories = ['Darbas', 'Mokslai', 'Sportas', 'Asmeniniai']
 const plannerPriorities = ['Žemas', 'Vidutinis', 'Aukštas']
+const priorityOrder = { Aukštas: 0, Vidutinis: 1, Žemas: 2 }
 
 const initialTasks = [
   { id: 1, title: 'AI mokymai', completed: false },
@@ -36,6 +37,7 @@ function App() {
   const [showLogin, setShowLogin] = useState(false)
   const [showPlanner, setShowPlanner] = useState(false)
   const [plannerTasks, setPlannerTasks] = useState([])
+  const [recommendedPlan, setRecommendedPlan] = useState(null)
   const [plannerForm, setPlannerForm] = useState({
     title: '',
     category: plannerCategories[0],
@@ -127,6 +129,31 @@ function App() {
 
   function deletePlannerTask(taskId) {
     setPlannerTasks((currentTasks) => currentTasks.filter((task) => task.id !== taskId))
+  }
+
+  function createRecommendedPlan() {
+    const plan = plannerTasks
+      .filter((task) => !task.completed)
+      .map((task, originalIndex) => ({ task, originalIndex }))
+      .sort((first, second) => {
+        const firstDeadline = first.task.deadline || '9999-12-31'
+        const secondDeadline = second.task.deadline || '9999-12-31'
+
+        if (firstDeadline !== secondDeadline) {
+          return firstDeadline.localeCompare(secondDeadline)
+        }
+
+        const priorityDifference = priorityOrder[first.task.priority] - priorityOrder[second.task.priority]
+        if (priorityDifference !== 0) return priorityDifference
+
+        const durationDifference = first.task.duration - second.task.duration
+        if (durationDifference !== 0) return durationDifference
+
+        return first.originalIndex - second.originalIndex
+      })
+      .map(({ task }) => task)
+
+    setRecommendedPlan(plan)
   }
 
   function changeScreen(loginIsVisible) {
@@ -241,7 +268,38 @@ function App() {
                 ))}
               </ul>
             )}
-          </div>
+          </section>
+          <button
+            type="button"
+            className="planner-submit-button planner-generate-button"
+            onClick={createRecommendedPlan}
+          >
+            Sudaryti dienos planą
+          </button>
+
+          {recommendedPlan && (
+            <section className="planner-section" aria-labelledby="recommended-plan-title">
+              <h2 id="recommended-plan-title">📅 Rekomenduojamas dienos planas</h2>
+              {recommendedPlan.length === 0 ? (
+                <p className="planner-empty-state">Nėra neatliktų užduočių planui sudaryti.</p>
+              ) : (
+                <ol className="planner-task-list recommended-plan-list">
+                  {recommendedPlan.map((task, index) => (
+                    <li key={task.id} className="planner-task-item">
+                      <div className="planner-task-heading">
+                        <strong>{index + 1}. {task.title}</strong>
+                        <span className="recommended-priority">{task.priority}</span>
+                      </div>
+                      <div className="planner-task-details">
+                        <span>{task.duration} min.</span>
+                        <span>Terminas: {task.deadline ? task.deadline.split('-').reverse().join('.') : 'Nenurodytas'}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </section>
+          )}
           <button
             type="button"
             className="planner-back-button"
