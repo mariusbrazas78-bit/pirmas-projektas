@@ -15,6 +15,8 @@ const weekDays = [
 ]
 
 const shortWeekDays = ['Pr', 'An', 'Tr', 'Kt', 'Pn', 'Št', 'Sk']
+const plannerCategories = ['Darbas', 'Mokslai', 'Sportas', 'Asmeniniai']
+const plannerPriorities = ['Žemas', 'Vidutinis', 'Aukštas']
 
 const initialTasks = [
   { id: 1, title: 'AI mokymai', completed: false },
@@ -33,6 +35,15 @@ function App() {
   const [selectedDay, setSelectedDay] = useState('Pirmadienis')
   const [showLogin, setShowLogin] = useState(false)
   const [showPlanner, setShowPlanner] = useState(false)
+  const [plannerTasks, setPlannerTasks] = useState([])
+  const [plannerForm, setPlannerForm] = useState({
+    title: '',
+    category: plannerCategories[0],
+    priority: plannerPriorities[1],
+    duration: '',
+    deadline: '',
+  })
+  const [plannerError, setPlannerError] = useState('')
   const [tasksByDay, setTasksByDay] = useState(initialTasksByDay)
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [isAddingTask, setIsAddingTask] = useState(false)
@@ -70,6 +81,54 @@ function App() {
     }))
   }
 
+  function handlePlannerFormChange(event) {
+    const { name, value } = event.target
+    setPlannerForm((currentForm) => ({ ...currentForm, [name]: value }))
+  }
+
+  function addPlannerTask(event) {
+    event.preventDefault()
+
+    if (!plannerForm.title.trim()) {
+      setPlannerError('Įrašykite užduoties pavadinimą.')
+      return
+    }
+
+    if (Number(plannerForm.duration) <= 0) {
+      setPlannerError('Trukmė turi būti didesnė už 0 minučių.')
+      return
+    }
+
+    setPlannerTasks((currentTasks) => [
+      ...currentTasks,
+      {
+        ...plannerForm,
+        id: Date.now(),
+        title: plannerForm.title.trim(),
+        duration: Number(plannerForm.duration),
+        completed: false,
+      },
+    ])
+    setPlannerForm({
+      title: '',
+      category: plannerCategories[0],
+      priority: plannerPriorities[1],
+      duration: '',
+      deadline: '',
+    })
+    setPlannerError('')
+  }
+
+  function togglePlannerTask(taskId) {
+    setPlannerTasks((currentTasks) => currentTasks.map((task) => (
+      task.id === taskId ? { ...task, completed: !task.completed } : task
+    )))
+  }
+
+  function deletePlannerTask(taskId) {
+    setPlannerTasks((currentTasks) => currentTasks.filter((task) => task.id !== taskId))
+  }
+
   function changeScreen(loginIsVisible) {
     setShowLogin(loginIsVisible)
     window.scrollTo(0, 0)
@@ -88,10 +147,100 @@ function App() {
           <p className="planner-description">
             Suplanuok dieną pagal savo užduotis ir prioritetus
           </p>
-          <div className="planner-placeholder" aria-label="Vieta būsimiems planuoklio elementams">
-            <span className="planner-placeholder-mark" aria-hidden="true">✦</span>
-            <h2>Planuoklio erdvė</h2>
-            <p>Čia atsiras tavo dienos planavimo elementai.</p>
+          <section className="planner-section" aria-labelledby="new-planner-task-title">
+            <h2 id="new-planner-task-title">Nauja užduotis</h2>
+            <form className="planner-task-form" onSubmit={addPlannerTask}>
+              <label className="planner-field planner-field-wide">
+                Užduoties pavadinimas
+                <input
+                  name="title"
+                  type="text"
+                  value={plannerForm.title}
+                  onChange={handlePlannerFormChange}
+                  placeholder="Pvz., pasiruošti susitikimui"
+                  aria-invalid={Boolean(plannerError && !plannerForm.title.trim())}
+                />
+              </label>
+
+              <label className="planner-field">
+                Kategorija
+                <select name="category" value={plannerForm.category} onChange={handlePlannerFormChange}>
+                  {plannerCategories.map((category) => <option key={category}>{category}</option>)}
+                </select>
+              </label>
+
+              <label className="planner-field">
+                Prioritetas
+                <select name="priority" value={plannerForm.priority} onChange={handlePlannerFormChange}>
+                  {plannerPriorities.map((priority) => <option key={priority}>{priority}</option>)}
+                </select>
+              </label>
+
+              <label className="planner-field">
+                Trukmė (minutėmis)
+                <input
+                  name="duration"
+                  type="number"
+                  min="1"
+                  step="1"
+                  value={plannerForm.duration}
+                  onChange={handlePlannerFormChange}
+                  aria-invalid={Boolean(plannerError && Number(plannerForm.duration) <= 0)}
+                />
+              </label>
+
+              <label className="planner-field">
+                Terminas
+                <input
+                  name="deadline"
+                  type="date"
+                  value={plannerForm.deadline}
+                  onChange={handlePlannerFormChange}
+                />
+              </label>
+
+              {plannerError && <p className="planner-form-error" role="alert">{plannerError}</p>}
+
+              <button type="submit" className="planner-submit-button">+ Pridėti užduotį</button>
+            </form>
+          </section>
+
+          <section className="planner-section" aria-labelledby="planner-tasks-title">
+            <h2 id="planner-tasks-title">Mano užduotys</h2>
+            {plannerTasks.length === 0 ? (
+              <p className="planner-empty-state">Kol kas užduočių nėra. Pridėkite pirmą užduotį aukščiau.</p>
+            ) : (
+              <ul className="planner-task-list">
+                {plannerTasks.map((task) => (
+                  <li key={task.id} className={`planner-task-item${task.completed ? ' is-completed' : ''}`}>
+                    <div className="planner-task-heading">
+                      <label className="planner-task-check">
+                        <input
+                          type="checkbox"
+                          checked={task.completed}
+                          onChange={() => togglePlannerTask(task.id)}
+                        />
+                        <span>{task.title}</span>
+                      </label>
+                      <button
+                        type="button"
+                        className="planner-delete-button"
+                        onClick={() => deletePlannerTask(task.id)}
+                        aria-label={`Ištrinti užduotį ${task.title}`}
+                      >
+                        Ištrinti
+                      </button>
+                    </div>
+                    <div className="planner-task-details">
+                      <span>{task.category}</span>
+                      <span>Prioritetas: {task.priority}</span>
+                      <span>{task.duration} min.</span>
+                      <span>Terminas: {task.deadline || 'Nenurodytas'}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <button
             type="button"
