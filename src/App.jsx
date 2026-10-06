@@ -17,14 +17,24 @@ const weekDays = [
 const shortWeekDays = ['Pr', 'An', 'Tr', 'Kt', 'Pn', 'Št', 'Sk']
 
 const categories = ['Tikslai', 'Pasiekimai', 'Laisvalaikiss']
+const initialTasks = [
+  { id: 1, title: 'AI mokymai', completed: false },
+  { id: 2, title: 'Pasivaikščiojimas', completed: false },
+  { id: 3, title: 'Anglų kalba', completed: false },
+]
 
 function App() {
   const [selectedDay, setSelectedDay] = useState('Pirmadienis')
   const [selectedCategory, setSelectedCategory] = useState('Tikslai')
   const [showLogin, setShowLogin] = useState(false)
-  const [tasks, setTasks] = useState([])
+  const [tasksByDay, setTasksByDay] = useState({ Pirmadienis: initialTasks })
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [isAddingTask, setIsAddingTask] = useState(false)
+  const tasks = tasksByDay[selectedDay] ?? []
+  const completedTasks = tasks.filter((task) => task.completed).length
+  const taskProgress = tasks.length === 0
+    ? 0
+    : Math.round((completedTasks / tasks.length) * 100)
 
   function addTask(event) {
     event.preventDefault()
@@ -32,9 +42,24 @@ function App() {
     const title = newTaskTitle.trim()
     if (!title) return
 
-    setTasks((currentTasks) => [...currentTasks, { id: Date.now(), title }])
+    setTasksByDay((currentTasksByDay) => ({
+      ...currentTasksByDay,
+      [selectedDay]: [
+        ...(currentTasksByDay[selectedDay] ?? []),
+        { id: Date.now(), title, completed: false },
+      ],
+    }))
     setNewTaskTitle('')
     setIsAddingTask(false)
+  }
+
+  function toggleTask(taskId) {
+    setTasksByDay((currentTasksByDay) => ({
+      ...currentTasksByDay,
+      [selectedDay]: (currentTasksByDay[selectedDay] ?? []).map((task) => (
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )),
+    }))
   }
 
   function changeScreen(loginIsVisible) {
@@ -112,12 +137,6 @@ function App() {
             </form>
           )}
 
-          {tasks.length > 0 && (
-            <ul className="task-list">
-              {tasks.map((task) => <li key={task.id}>{task.title}</li>)}
-            </ul>
-          )}
-
           <div className="week-days week-picker" role="group" aria-label="Pasirinkite savaitės dieną">
             {weekDays.map((day, index) => (
               <button
@@ -133,6 +152,28 @@ function App() {
               </button>
             ))}
           </div>
+
+          <section className="day-task-list" aria-label={`${selectedDay} dienos užduotys`}>
+            <h3>{selectedDay} užduotys</h3>
+            {tasks.length > 0 ? (
+              <ul className="task-list">
+                {tasks.map((task) => (
+                  <li key={task.id} className={task.completed ? 'task-completed' : ''}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={task.completed}
+                        onChange={() => toggleTask(task.id)}
+                      />
+                      <span>{task.title}</span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Šiai dienai užduočių dar nėra.</p>
+            )}
+          </section>
 
 
         </div>
@@ -167,7 +208,7 @@ function App() {
       <div className="ticks"></div>
 
       <div id="progress">
-        <ProgressBar progress={65} />
+        <ProgressBar progress={taskProgress} />
       </div>
 
       <div className="ticks"></div>
