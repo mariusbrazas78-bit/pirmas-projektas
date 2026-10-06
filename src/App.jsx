@@ -16,7 +16,6 @@ const weekDays = [
 
 const shortWeekDays = ['Pr', 'An', 'Tr', 'Kt', 'Pn', 'Št', 'Sk']
 
-const categories = ['Tikslai', 'Pasiekimai', 'Laisvalaikiss']
 const initialTasks = [
   { id: 1, title: 'AI mokymai', completed: false },
   { id: 2, title: 'Pasivaikščiojimas', completed: false },
@@ -32,7 +31,6 @@ const initialTasksByDay = Object.fromEntries(
 
 function App() {
   const [selectedDay, setSelectedDay] = useState('Pirmadienis')
-  const [selectedCategory, setSelectedCategory] = useState('Tikslai')
   const [showLogin, setShowLogin] = useState(false)
   const [tasksByDay, setTasksByDay] = useState(initialTasksByDay)
   const [newTaskTitle, setNewTaskTitle] = useState('')
@@ -40,6 +38,7 @@ function App() {
   const tasks = tasksByDay[selectedDay] ?? []
   const completedTasks = tasks.filter((task) => task.completed).length
   const remainingTasks = tasks.length - completedTasks
+  const nextTask = tasks.find((task) => !task.completed)
   const taskProgress = tasks.length === 0
     ? 0
     : Math.round((completedTasks / tasks.length) * 100)
@@ -187,29 +186,60 @@ function App() {
         </div>
 
         <div id="social">
-          <svg
-            className="icon"
-            role="presentation"
-            aria-hidden="true"
-          >
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
+          <section className="my-day-panel" aria-labelledby="my-day-title">
+            <h2 id="my-day-title">Mano diena</h2>
 
-          <div className="week-days" role="group" aria-label="Pasirinkite kategoriją">
-            {categories.map((category) => (
-              <button
-                key={category}
-                type="button"
-                className="day-button"
-                aria-pressed={selectedCategory === category}
-                onClick={() => setSelectedCategory(category)}
+            <div className="my-day-section">
+              <h3>Dienos tikslas</h3>
+              <p>Atlikti visas {tasks.length} dienos užduotis</p>
+              <p className="my-day-detail">{completedTasks} iš {tasks.length} atlikta</p>
+            </div>
+
+            <div className="my-day-section">
+              <h3>Šiandienos progresas</h3>
+              <div className="my-day-progress-copy">
+                <span>{taskProgress}%</span>
+                <span>{completedTasks}/{tasks.length} užduočių</span>
+              </div>
+              <div
+                className="my-day-progress-track"
+                role="progressbar"
+                aria-label={`${selectedDay} progresas`}
+                aria-valuenow={taskProgress}
+                aria-valuemin="0"
+                aria-valuemax="100"
               >
-                {category}
-              </button>
-            ))}
-          </div>
+                <div className="my-day-progress-fill" style={{ width: `${taskProgress}%` }} />
+              </div>
+            </div>
 
+            <div className="my-day-section">
+              <h3>Artimiausia veikla</h3>
+              <p>{nextTask ? nextTask.title : 'Visos dienos užduotys atliktos!'}</p>
+            </div>
 
+            <div className="my-day-section">
+              <h3>Užduočių sąrašas</h3>
+              {tasks.length > 0 ? (
+                <ul className="task-list my-day-task-list">
+                  {tasks.map((task) => (
+                    <li key={task.id} className={task.completed ? 'task-completed' : ''}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={task.completed}
+                          onChange={() => toggleTask(task.id)}
+                        />
+                        <span>{task.title}</span>
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Šiai dienai užduočių dar nėra.</p>
+              )}
+            </div>
+          </section>
         </div>
       </section>
 

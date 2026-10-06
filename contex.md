@@ -347,6 +347,7 @@ Nauji komponentai taip pat turi būti pritaikyti mažesniems ekranams.
 - užduočių atlikimo žymėjimas varnele;
 - automatinis progreso skaičiavimas pagal pažymėtas pasirinktos dienos užduotis.
 - mažos statistikos kortelės virš progreso juostos: visų užduočių, atliktų ir likusių skaičiai.
+- vietoj kategorijų dešinėje rodomas „Mano diena“ skydelis: dienos tikslas, dienos progresas, artimiausia neatlikta veikla ir interaktyvus dienos užduočių sąrašas.
 
 ---
 
@@ -548,6 +549,8 @@ Negalima pašalinti ankstesnio svarbaus projekto konteksto, jeigu jis vis dar ak
 `ProgressBar` gauna automatiškai apskaičiuotą procentą: atliktų pasirinktos dienos užduočių skaičius dalijamas iš visų tos dienos užduočių. Užduotys ir jų pažymėjimai saugomi tik React būsenoje ir dingsta perkrovus puslapį.
 
 Virš progreso juostos rodomos trys statistikos kortelės („Užduotys“, „Atliktos“, „Liko“). Jų skaičiai atnaujinami pagal pasirinktą savaitės dieną ir pažymėtas užduotis.
+
+Dešinysis skilties „Tikslai / Pasiekimai / Laisvalaikis“ blokas pakeistas į „Mano diena“. Jis rodo pasirinktos dienos tikslą (atlikti visas užduotis), progresą su procentine juosta, pirmą neatliktą užduotį kaip artimiausią veiklą ir sąrašą su veikiančiomis atlikimo varnelėmis. Informacija atsinaujina pasirinkus kitą savaitės dieną arba pakeitus užduoties būseną.
 
 `src/App.css` pridėti formos, mygtuko ir užduočių sąrašo stiliai, naudojant esamus spalvų kintamuosius.
 
