@@ -540,7 +540,7 @@ Negalima pašalinti ankstesnio svarbaus projekto konteksto, jeigu jis vis dar ak
 
 ### 2026-10-06 atnaujinimas
 
-`src/App.jsx` užduočių skiltyje pridėtas „Nauja užduotis“ mygtukas. Jį paspaudus atveriama forma; įvedus pavadinimą ir paspaudus „Pridėti“, užduotis parodoma sąraše. Tuščias arba vien tarpų pavadinimas nepridedamas. Užduotys saugomos tik React būsenoje ir dingsta perkrovus puslapį.
+`src/App.jsx` užduočių skiltyje pridėtas „Nauja užduotis“ mygtukas. Jį paspaudus atveriama forma su pavadinimo laukeliu ir pavyzdžiu „Sporto salė, Anglų kalba, AI mokymai“; įvedus pavadinimą ir paspaudus „Pridėti“, užduotis parodoma sąraše. Tuščias arba vien tarpų pavadinimas nepridedamas. Užduotys saugomos tik React būsenoje ir dingsta perkrovus puslapį.
 
 `src/App.css` pridėti formos, mygtuko ir užduočių sąrašo stiliai, naudojant esamus spalvų kintamuosius.
 

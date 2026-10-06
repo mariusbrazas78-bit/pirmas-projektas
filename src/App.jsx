@@ -103,6 +103,7 @@ function App() {
               <input
                 id="new-task-title"
                 type="text"
+                placeholder="Sporto salė, Anglų kalba, AI mokymai"
                 value={newTaskTitle}
                 onChange={(event) => setNewTaskTitle(event.target.value)}
                 autoFocus
