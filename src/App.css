@@ -120,12 +120,18 @@
 }
 
 .main-nav .nav-brand {
-  margin-right: auto;
+  margin-right: 0;
+  margin-left: auto;
   font-size: 56px;
   line-height: 1.15;
   letter-spacing: -1.68px;
   font-weight: 600;
   color: var(--accent);
+}
+
+.main-nav > a:not(.nav-brand),
+.main-nav > button {
+  margin-left: auto;
 }
 
 @media (max-width: 1024px) {

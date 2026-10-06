@@ -52,7 +52,7 @@ function App() {
           />
         </div>
         <nav className="main-nav" aria-label="Pagrindinė navigacija">
-          <a className="nav-brand" href="#center">Mano dienotvarkė</a>
+          <a className="nav-brand" href="#center">MANO DIENOTVARKĖ</a>
           <a href="#docs">Užduotys</a>
           <a href="#progress">Progresas</a>
           <button type="button" onClick={() => changeScreen(true)}>
