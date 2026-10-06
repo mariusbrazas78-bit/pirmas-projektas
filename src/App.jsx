@@ -23,11 +23,18 @@ const initialTasks = [
   { id: 3, title: 'Anglų kalba', completed: false },
 ]
 
+const initialTasksByDay = Object.fromEntries(
+  weekDays.map((day) => [
+    day,
+    initialTasks.map((task) => ({ ...task, id: `${day}-${task.id}` })),
+  ]),
+)
+
 function App() {
   const [selectedDay, setSelectedDay] = useState('Pirmadienis')
   const [selectedCategory, setSelectedCategory] = useState('Tikslai')
   const [showLogin, setShowLogin] = useState(false)
-  const [tasksByDay, setTasksByDay] = useState({ Pirmadienis: initialTasks })
+  const [tasksByDay, setTasksByDay] = useState(initialTasksByDay)
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [isAddingTask, setIsAddingTask] = useState(false)
   const tasks = tasksByDay[selectedDay] ?? []

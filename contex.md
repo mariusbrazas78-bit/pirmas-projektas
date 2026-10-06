@@ -160,12 +160,12 @@ Komponentas gauna `progress` reikšmę per props.
 Šiuo metu `App.jsx` naudojama:
 
 ```jsx
-<ProgressBar progress={65} />
+<ProgressBar progress={taskProgress} />
 ```
 
 Todėl rodomas:
 
-**65 %**
+Procentas automatiškai apskaičiuojamas pagal pasirinktos dienos atliktų užduočių dalį.
 
 Komponentas apriboja reikšmę tarp:
 
@@ -241,7 +241,7 @@ Projekto progresas
 Progreso duomenų dar nėra.
 ```
 
-Šios būsenos yra realizuotos, tačiau `App.jsx` šiuo metu naudojama normali būsena su `progress={65}`.
+Šios būsenos yra realizuotos. `App.jsx` perduoda komponentui pasirinktos dienos užduočių būsenos pagrindu apskaičiuotą progresą.
 
 ---
 
@@ -342,6 +342,10 @@ Nauji komponentai taip pat turi būti pritaikyti mažesniems ekranams.
 - responsive dizaino pagrindai.
 - „Nauja užduotis“ mygtukas užduočių skiltyje;
 - naujos užduoties pridėjimas ir rodymas sąraše (duomenys laikomi React būsenoje).
+- savaitės dienos pasirinkimas ir atskiras dienos užduočių sąrašas;
+- visų savaitės dienų pradinės užduotys: „AI mokymai“, „Pasivaikščiojimas“, „Anglų kalba“;
+- užduočių atlikimo žymėjimas varnele;
+- automatinis progreso skaičiavimas pagal pažymėtas pasirinktos dienos užduotis.
 
 ---
 
@@ -354,13 +358,11 @@ Dar nėra:
 - atsijungimo;
 - vartotojo sesijos;
 - vartotojo profilio;
-- užduočių sąrašo;
-- užduočių kūrimo;
+- nuolatinio užduočių saugojimo;
 - užduočių redagavimo;
 - užduočių ištrynimo;
 - užduočių pažymėjimo kaip atliktų;
 - redaguojamos dienotvarkės;
-- automatinio progreso skaičiavimo;
 - backend;
 - API;
 - duomenų bazės;
@@ -540,7 +542,9 @@ Negalima pašalinti ankstesnio svarbaus projekto konteksto, jeigu jis vis dar ak
 
 ### 2026-10-06 atnaujinimas
 
-`src/App.jsx` užduočių skiltyje pridėtas „Nauja užduotis“ mygtukas. Jį paspaudus atveriama forma su pavadinimo laukeliu ir pavyzdžiu „Sporto salė, Anglų kalba, AI mokymai“; įvedus pavadinimą ir paspaudus „Pridėti“, užduotis parodoma sąraše. Tuščias arba vien tarpų pavadinimas nepridedamas. Užduotys saugomos tik React būsenoje ir dingsta perkrovus puslapį.
+`src/App.jsx` užduočių skiltyje rodomas atskiras sąrašas kiekvienai pasirinktai savaitės dienai. Kiekvienai dienai pradinės užduotys: „AI mokymai“, „Pasivaikščiojimas“ ir „Anglų kalba“. Užduotis galima pažymėti atlikta. Vienos dienos žymos nekeičia kitų dienų būsenos. „Nauja užduotis“ forma leidžia pridėti užduotį į pasirinktą dieną; tuščias pavadinimas nepridedamas.
+
+`ProgressBar` gauna automatiškai apskaičiuotą procentą: atliktų pasirinktos dienos užduočių skaičius dalijamas iš visų tos dienos užduočių. Užduotys ir jų pažymėjimai saugomi tik React būsenoje ir dingsta perkrovus puslapį.
 
 `src/App.css` pridėti formos, mygtuko ir užduočių sąrašo stiliai, naudojant esamus spalvų kintamuosius.
 
@@ -555,9 +559,10 @@ Pagrindiniame puslapyje yra:
 - Subscribe skaitiklis;
 - „Mano dienotvarkė“;
 - kontaktų blokas;
-- 65 % progreso juosta;
+- pasirinktos dienos užduočių progresas;
 - prisijungimo forma.
-- užduoties pridėjimo forma ir sesijos metu rodomas užduočių sąrašas.
+- savaitės dienos užduočių sąrašas, užduočių pridėjimas ir atlikimo žymėjimas;
+- automatiškai perskaičiuojama dienos progreso juosta.
 
 Pagrindiniai atskiri komponentai:
 
@@ -568,7 +573,7 @@ ProgressBar
 
 Dabartinė prisijungimo forma yra demonstracinė.
 
-Dabartinis 65 % progresas yra statinė reikšmė.
+Dienos progresas automatiškai skaičiuojamas iš pažymėtų tos dienos užduočių.
 
 Duomenų bazė ir backend dar nenaudojami.
 
@@ -580,7 +585,7 @@ Pagrindinė tolimesnė kryptis:
 
 **užduočių sąrašo (Task List) kūrimas.**
 
-Pirmasis sąrašo etapas įgyvendintas: užduotis galima pridėti ir matyti iki puslapio perkrovimo. Kitas etapas gali būti užduočių atlikimo žymėjimas ir ištrynimas; nuolatinis saugojimas dar neįdiegtas.
+Užduočių sąrašas leidžia pasirinkti dieną, pridėti užduotis, jas pažymėti atliktas ir matyti pagal tai perskaičiuojamą progresą. Kitas etapas gali būti užduočių ištrynimas ir duomenų saugojimas po puslapio perkrovimo.
 
 Pirmame etape vartotojas turėtų galėti:
 
@@ -590,7 +595,7 @@ Pirmame etape vartotojas turėtų galėti:
 4. pažymėti užduotį kaip atliktą;
 5. ištrinti užduotį.
 
-Vėliau atliktų užduočių skaičių galima susieti su `ProgressBar`.
+Atliktų užduočių dalis jau susieta su `ProgressBar`.
 
 ---
 
