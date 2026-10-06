@@ -368,6 +368,44 @@
   margin: 0 0 16px;
 }
 
+.planner-analysis-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+  text-align: left;
+}
+
+.planner-analysis-stats p {
+  margin: 0;
+}
+
+.planner-analysis-stats strong {
+  color: var(--text-h);
+}
+
+.planner-analysis-track {
+  height: 12px;
+  margin-top: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--social-bg);
+}
+
+.planner-analysis-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.planner-workload-warning {
+  margin: 12px 0 0;
+  color: #b42318;
+  font-weight: 600;
+  text-align: left;
+}
+
 .planner-task-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -570,6 +608,10 @@
   }
 
   .planner-task-form {
+    grid-template-columns: 1fr;
+  }
+
+  .planner-analysis-stats {
     grid-template-columns: 1fr;
   }
 

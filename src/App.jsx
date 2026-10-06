@@ -46,6 +46,21 @@ function App() {
     deadline: '',
   })
   const [plannerError, setPlannerError] = useState('')
+  const plannerCompletedCount = plannerTasks.filter((task) => task.completed).length
+  const plannerRemainingTasks = plannerTasks.length - plannerCompletedCount
+  const plannerProgress = plannerTasks.length === 0
+    ? 0
+    : Math.round((plannerCompletedCount / plannerTasks.length) * 100)
+  const remainingDuration = plannerTasks
+    .filter((task) => !task.completed)
+    .reduce((total, task) => total + task.duration, 0)
+  const remainingHours = Math.floor(remainingDuration / 60)
+  const remainingMinutes = remainingDuration % 60
+  const workload = remainingDuration <= 240
+    ? 'Lengva'
+    : remainingDuration <= 420
+      ? 'Vidutinė'
+      : 'Didelė'
   const [tasksByDay, setTasksByDay] = useState(initialTasksByDay)
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [isAddingTask, setIsAddingTask] = useState(false)
@@ -174,6 +189,32 @@ function App() {
           <p className="planner-description">
             Suplanuok dieną pagal savo užduotis ir prioritetus
           </p>
+          <section className="planner-section planner-analysis" aria-labelledby="planner-analysis-title">
+            <h2 id="planner-analysis-title">📊 Dienos analizė</h2>
+            <div className="planner-analysis-stats">
+              <p>Užduotys: <strong>{plannerTasks.length}</strong></p>
+              <p>Atlikta: <strong>{plannerCompletedCount}</strong></p>
+              <p>Liko: <strong>{plannerRemainingTasks}</strong></p>
+              <p>Progresas: <strong>{plannerProgress} %</strong></p>
+              <p>Likęs laikas: <strong>{remainingHours} val. {remainingMinutes} min.</strong></p>
+              <p>Dienos apkrova: <strong>{workload}</strong></p>
+            </div>
+            <div
+              className="planner-analysis-track"
+              role="progressbar"
+              aria-label="Dienos užduočių progresas"
+              aria-valuenow={plannerProgress}
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <div className="planner-analysis-fill" style={{ width: `${plannerProgress}%` }} />
+            </div>
+            {remainingDuration > 420 && (
+              <p className="planner-workload-warning" role="status">
+                Dienos planas gali būti per daug apkrautas.
+              </p>
+            )}
+          </section>
           <section className="planner-section" aria-labelledby="new-planner-task-title">
             <h2 id="new-planner-task-title">Nauja užduotis</h2>
             <form className="planner-task-form" onSubmit={addPlannerTask}>
