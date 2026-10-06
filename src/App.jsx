@@ -246,7 +246,9 @@ function App() {
               <p>🎉 Puiku! Visos suplanuotos užduotys atliktos.</p>
             ) : (
               <div>
-                <p className="planner-recommendation-task">{topRecommendedTask.title}</p>
+                <p className="planner-recommendation-task">
+                  Pirmiausia atlikite: {topRecommendedTask.title}
+                </p>
                 <p>{getRecommendationReason(topRecommendedTask)}</p>
                 {remainingDuration > 420 && (
                   <p className="planner-recommendation-load">

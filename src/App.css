@@ -406,6 +406,27 @@
   text-align: left;
 }
 
+.planner-recommendation {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  text-align: left;
+}
+
+.planner-recommendation > div > p + p {
+  margin-top: 8px;
+}
+
+.planner-recommendation-task {
+  color: var(--accent);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.planner-recommendation-load {
+  color: #8a4b08;
+  font-weight: 600;
+}
+
 .planner-task-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
