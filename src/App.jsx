@@ -32,6 +32,29 @@ const initialTasksByDay = Object.fromEntries(
   ]),
 )
 
+function getRecommendedTasks(tasks) {
+  return tasks
+    .filter((task) => !task.completed)
+    .map((task, originalIndex) => ({ task, originalIndex }))
+    .sort((first, second) => {
+      const firstDeadline = first.task.deadline || '9999-12-31'
+      const secondDeadline = second.task.deadline || '9999-12-31'
+
+      if (firstDeadline !== secondDeadline) {
+        return firstDeadline.localeCompare(secondDeadline)
+      }
+
+      const priorityDifference = priorityOrder[first.task.priority] - priorityOrder[second.task.priority]
+      if (priorityDifference !== 0) return priorityDifference
+
+      const durationDifference = first.task.duration - second.task.duration
+      if (durationDifference !== 0) return durationDifference
+
+      return first.originalIndex - second.originalIndex
+    })
+    .map(({ task }) => task)
+}
+
 function App() {
   const [selectedDay, setSelectedDay] = useState('Pirmadienis')
   const [showLogin, setShowLogin] = useState(false)
@@ -61,6 +84,7 @@ function App() {
     : remainingDuration <= 420
       ? 'Vidutinė'
       : 'Didelė'
+  const topRecommendedTask = getRecommendedTasks(plannerTasks)[0]
   const [tasksByDay, setTasksByDay] = useState(initialTasksByDay)
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [isAddingTask, setIsAddingTask] = useState(false)
@@ -147,28 +171,27 @@ function App() {
   }
 
   function createRecommendedPlan() {
-    const plan = plannerTasks
-      .filter((task) => !task.completed)
-      .map((task, originalIndex) => ({ task, originalIndex }))
-      .sort((first, second) => {
-        const firstDeadline = first.task.deadline || '9999-12-31'
-        const secondDeadline = second.task.deadline || '9999-12-31'
+    setRecommendedPlan(getRecommendedTasks(plannerTasks))
+  }
 
-        if (firstDeadline !== secondDeadline) {
-          return firstDeadline.localeCompare(secondDeadline)
-        }
+  function getRecommendationReason(task) {
+    const today = new Date()
+    const todayDate = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, '0'),
+      String(today.getDate()).padStart(2, '0'),
+    ].join('-')
 
-        const priorityDifference = priorityOrder[first.task.priority] - priorityOrder[second.task.priority]
-        if (priorityDifference !== 0) return priorityDifference
+    let deadlineReason = 'terminas nenurodytas'
+    if (task.deadline === todayDate) {
+      deadlineReason = 'terminas yra šiandien'
+    } else if (task.deadline && task.deadline < todayDate) {
+      deadlineReason = 'terminas jau praėjęs'
+    } else if (task.deadline) {
+      deadlineReason = `artimiausias terminas – ${task.deadline.split('-').reverse().join('.')}`
+    }
 
-        const durationDifference = first.task.duration - second.task.duration
-        if (durationDifference !== 0) return durationDifference
-
-        return first.originalIndex - second.originalIndex
-      })
-      .map(({ task }) => task)
-
-    setRecommendedPlan(plan)
+    return `Jos prioritetas ${task.priority.toLowerCase()}, ${deadlineReason}, o planuojama trukmė – ${task.duration} min.`
   }
 
   function changeScreen(loginIsVisible) {
@@ -213,6 +236,24 @@ function App() {
               <p className="planner-workload-warning" role="status">
                 Dienos planas gali būti per daug apkrautas.
               </p>
+            )}
+          </section>
+          <section className="planner-section planner-recommendation" aria-labelledby="planner-recommendation-title">
+            <h2 id="planner-recommendation-title">Išmani dienos rekomendacija</h2>
+            {plannerTasks.length === 0 ? (
+              <p>Pridėkite pirmąją užduotį, kad galėtume sudaryti dienos rekomendaciją.</p>
+            ) : !topRecommendedTask ? (
+              <p>🎉 Puiku! Visos suplanuotos užduotys atliktos.</p>
+            ) : (
+              <div>
+                <p className="planner-recommendation-task">{topRecommendedTask.title}</p>
+                <p>{getRecommendationReason(topRecommendedTask)}</p>
+                {remainingDuration > 420 && (
+                  <p className="planner-recommendation-load">
+                    Dienos apkrova didelė. Apsvarstykite mažesnio prioriteto užduočių perkėlimą.
+                  </p>
+                )}
+              </div>
             )}
           </section>
           <section className="planner-section" aria-labelledby="new-planner-task-title">

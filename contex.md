@@ -352,6 +352,7 @@ Nauji komponentai taip pat turi būti pritaikyti mažesniems ekranams.
 - planuoklyje veikia MVP 2/5 užduočių kūrimas ir valdymas: užduoties forma, kategorija, prioritetas, trukmė, terminas, atlikimo žymėjimas ir ištrynimas; duomenys laikomi React būsenoje.
 - MVP 3/5: mygtukas „Sudaryti dienos planą“ sudaro vietinę rekomenduojamą neatliktų užduočių tvarką pagal terminą, prioritetą ir trukmę; pradinių užduočių įrašai nekeičiami.
 - MVP 4/5: planuoklio „Dienos analizė“ automatiškai rodo užduočių skaičių, atliktas ir likusias užduotis, atlikimo procentą bei progreso juostą, likusių užduočių trukmę ir apkrovą; virš 7 valandų rodomas įspėjimas.
+- MVP 5/5: „Išmani dienos rekomendacija“ pagal MVP 3/5 rikiavimo taisykles parodo pirmą neatliktą užduotį ir paaiškinimą; pateikia tuščio sąrašo, visų atliktų užduočių ir didelės apkrovos pasiūlymus.
 
 ---
 
@@ -563,6 +564,8 @@ Planuoklio vaizde įgyvendintas MVP 2/5. „Nauja užduotis“ formoje galima į
 MVP 3/5: po „Mano užduotys“ pateiktas mygtukas „Sudaryti dienos planą“. Paspaudus iš neatliktų užduočių kopijos sudaroma sekcija „📅 Rekomenduojamas dienos planas“. Rikiavimo taisyklės: ankstesnis terminas pirmiau; jei terminai vienodi, prioritetai Aukštas, Vidutinis, Žemas; jei ir jie vienodi, trumpesnė trukmė pirmiau. Termino neturinčios užduotys rikiuojamos po užduočių su terminu. Plane rodoma eilė, pavadinimas, prioritetas, trukmė ir terminas. Atliktos užduotys neįtraukiamos. Rikiuojama kopija, originalių užduočių tvarka ir duomenys nekeičiami; planavimas veikia lokaliai be AI API.
 
 MVP 4/5: planuoklio puslapyje rodoma „📊 Dienos analizė“. Ji iš `plannerTasks` būsenos automatiškai apskaičiuoja bendrą užduočių skaičių, atliktų ir likusių užduočių skaičių, atlikimo procentą, progreso juostą ir likusių užduočių trukmę. Likęs laikas pateikiamas valandomis ir minutėmis. Apkrova nustatoma pagal neatliktų užduočių trukmę: iki 4 val. – „Lengva“, daugiau nei 4 iki 7 val. – „Vidutinė“, daugiau nei 7 val. – „Didelė“. Kai likęs laikas viršija 7 valandas, rodomas įspėjimas „Dienos planas gali būti per daug apkrautas.“ Visi rodikliai persiskaičiuoja pasikeitus užduočių sąrašui ar atlikimo būsenai.
+
+MVP 5/5: pridėta kortelė „Išmani dienos rekomendacija“. Ji naudoja tą pačią `getRecommendedTasks` vietinę rūšiavimo funkciją kaip automatinis planas ir parodo pirmą neatliktą užduotį, jos prioritetą, termino būseną / datą ir trukmę kaip rekomendacijos paaiškinimą. Kai užduočių nėra, rodoma „Pridėkite pirmąją užduotį, kad galėtume sudaryti dienos rekomendaciją.“ Kai visos atliktos, rodoma „🎉 Puiku! Visos suplanuotos užduotys atliktos.“ Jei apkrova viršija 7 valandas, rekomenduojama apsvarstyti mažesnio prioriteto užduočių perkėlimą. Rekomendacija perskaičiuojama tiesiai iš React užduočių būsenos.
 
 `src/App.css` pridėti violetinį akcentą ir esamus spalvų kintamuosius naudojantys responsive planuoklio vaizdo stiliai.
 
