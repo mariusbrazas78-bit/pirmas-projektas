@@ -346,6 +346,7 @@ Nauji komponentai taip pat turi būti pritaikyti mažesniems ekranams.
 - visų savaitės dienų pradinės užduotys: „AI mokymai“, „Pasivaikščiojimas“, „Anglų kalba“;
 - užduočių atlikimo žymėjimas varnele;
 - automatinis progreso skaičiavimas pagal pažymėtas pasirinktos dienos užduotis.
+- mažos statistikos kortelės virš progreso juostos: visų užduočių, atliktų ir likusių skaičiai.
 
 ---
 
@@ -545,6 +546,8 @@ Negalima pašalinti ankstesnio svarbaus projekto konteksto, jeigu jis vis dar ak
 `src/App.jsx` užduočių skiltyje rodomas atskiras sąrašas kiekvienai pasirinktai savaitės dienai. Kiekvienai dienai pradinės užduotys: „AI mokymai“, „Pasivaikščiojimas“ ir „Anglų kalba“. Užduotis galima pažymėti atlikta. Vienos dienos žymos nekeičia kitų dienų būsenos. „Nauja užduotis“ forma leidžia pridėti užduotį į pasirinktą dieną; tuščias pavadinimas nepridedamas.
 
 `ProgressBar` gauna automatiškai apskaičiuotą procentą: atliktų pasirinktos dienos užduočių skaičius dalijamas iš visų tos dienos užduočių. Užduotys ir jų pažymėjimai saugomi tik React būsenoje ir dingsta perkrovus puslapį.
+
+Virš progreso juostos rodomos trys statistikos kortelės („Užduotys“, „Atliktos“, „Liko“). Jų skaičiai atnaujinami pagal pasirinktą savaitės dieną ir pažymėtas užduotis.
 
 `src/App.css` pridėti formos, mygtuko ir užduočių sąrašo stiliai, naudojant esamus spalvų kintamuosius.
 

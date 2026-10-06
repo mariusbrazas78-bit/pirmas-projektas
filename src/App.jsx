@@ -39,6 +39,7 @@ function App() {
   const [isAddingTask, setIsAddingTask] = useState(false)
   const tasks = tasksByDay[selectedDay] ?? []
   const completedTasks = tasks.filter((task) => task.completed).length
+  const remainingTasks = tasks.length - completedTasks
   const taskProgress = tasks.length === 0
     ? 0
     : Math.round((completedTasks / tasks.length) * 100)
@@ -215,6 +216,20 @@ function App() {
       <div className="ticks"></div>
 
       <div id="progress">
+        <div className="task-statistics" aria-label="Pasirinktos dienos užduočių statistika">
+          <div className="task-stat-card">
+            <span>Užduotys</span>
+            <strong>{tasks.length}</strong>
+          </div>
+          <div className="task-stat-card">
+            <span>Atliktos</span>
+            <strong>{completedTasks}</strong>
+          </div>
+          <div className="task-stat-card">
+            <span>Liko</span>
+            <strong>{remainingTasks}</strong>
+          </div>
+        </div>
         <ProgressBar progress={taskProgress} />
       </div>
 
